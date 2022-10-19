@@ -1,0 +1,23 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+
+// ================================================================
+// an abstract class to represent a free standing object (chest, sign, shop, ect.)
+// an enemy (zombie, slime, ect.)
+// or anything else that does not have to be snapped the the grid
+// ================================================================
+
+class Entity {
+protected:
+	sf::Sprite sprite;
+	sf::Texture* tex;
+	float health;
+	// each entity can drop 10 items MAX
+public:
+	void dropPayload();
+	void initialize(sf::Vector2f);
+	void update(sf::Vector2f);
+	inline sf::Sprite* getSprite() {return &sprite;}
+    void draw(sf::RenderWindow&);
+	inline float Gethealth(){return health;};
+};
