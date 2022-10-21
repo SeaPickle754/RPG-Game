@@ -1,7 +1,7 @@
 #include "EntitiesList.h"
 
 void Chest::initialize(sf::Vector2f pos){
-    health = 10;
+    health = 10.f;
     tex = new sf::Texture;
     tex->loadFromFile("images/chest.png");
     sprite.setTexture(*tex);

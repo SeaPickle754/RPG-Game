@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "EntitiesList.h"
 #include "MapManager.h"
+#include "constants.h"
 
 const int TEXTURE_NUMBER = 1;
 
@@ -15,6 +16,7 @@ private:
 	std::vector<Entity> entityList[9];
 	sf::Texture textures[TEXTURE_NUMBER];
 	MapManager* map;
+	sf::Clock sword_cooldown;
 public:
 	void initialize(MapManager*);
 	void update(sf::Sprite* weapon, bool);

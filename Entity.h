@@ -18,6 +18,8 @@ public:
 	void initialize(sf::Vector2f);
 	void update(sf::Vector2f);
 	inline sf::Sprite* getSprite() {return &sprite;}
+	inline void dealDamage(float damage) {health -= damage;}
     void draw(sf::RenderWindow&);
 	inline float Gethealth(){return health;};
+	inline bool checkDeath(float minHealth) {return (health < minHealth);}
 };
