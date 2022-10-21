@@ -28,6 +28,7 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
                 entityList[map->getRoom()].erase(i);
             break;
         }
+        i->update(sf::Vector2f(0.f, 0.f));
     }}
 }
 

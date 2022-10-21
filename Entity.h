@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "healthBar.h"
 
 // ================================================================
 // an abstract class to represent a free standing object (chest, sign, shop, ect.)
@@ -12,7 +13,7 @@ protected:
 	sf::Sprite sprite;
 	sf::Texture* tex;
 	float health;
-	// each entity can drop 10 items MAX
+	HealthBar* healthBar;
 public:
 	void dropPayload();
 	void initialize(sf::Vector2f);
