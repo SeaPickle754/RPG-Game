@@ -23,12 +23,13 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
         if(i->getSprite()->getGlobalBounds().intersects(bBox)&&
            sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN){
             i->dealDamage(PLAYER_SWORD_DAMAGE);
+
+            i->update(sf::Vector2f(0.f, 0.f));
             sword_cooldown.restart();
             if(i->checkDeath(0.f))
                 entityList[map->getRoom()].erase(i);
             break;
         }
-        i->update(sf::Vector2f(0.f, 0.f));
     }}
 }
 
