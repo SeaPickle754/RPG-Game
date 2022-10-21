@@ -8,7 +8,8 @@ for some reason,
 'const float PLAYER_SPEED = 130.f;'
 seems to throw a compile error.
 */
-#define PLAYER_SPEED 130.f
+#define PLAYER_SPEED 150.f
+// Whether or not the player's sword is sheathed
 #define PLAYER_DEFAULT_SWORD true
 #define PLAYER_SWORD_DAMAGE 2.25
 //sword damage cooldown in milliseconds
