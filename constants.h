@@ -16,5 +16,3 @@ seems to throw a compile error.
 #define HEALTH_BAR_HEIGHT 10
 #define HEALTH_BAR_COLOR sf::Color(255, 0, 0)
 #define HEALTH_BAR_MAX_LENGTH 40
-#define HEALTH_BAR_OUTLINE_COLOR sf::Color(255, 0, 0)
-#define HEALTH_BAR_OUTLINE_THICKNESS 0
