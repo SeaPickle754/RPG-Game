@@ -29,15 +29,10 @@ void Application::render() {
 	window->display();
 }
 
-void Application::update() {
-	sf::Time dt = deltaClock.restart();
-	short prevroom = mapManager.getRoom();
-	sf::Vector2f v = (sf::Vector2f)sf::Mouse::getPosition(*window);
-	v = (sf::Vector2f)window->mapCoordsToPixel(v);
-	p.update(dt, mapManager.getHitboxes(),v);
-	sf::Vector2f vec = p.getSprite()->getPosition();
-	int newRoom;
-	if (vec.x < 0) {
+void Application::updatePlayerPage(){
+    int newRoom;
+    sf::Vector2f vec = p.getSprite()->getPosition();
+    if (vec.x < 0) {
 		newRoom = mapManager.checkPlayerPage(1);
 		if (mapManager.getRoom() != newRoom) {
 			mapManager.changeRoomTo(newRoom);
@@ -74,8 +69,15 @@ void Application::update() {
 			vec.y = 380;
 	}
 	p.getSprite()->setPosition(vec);
-	if(mapManager.getRoom() != prevroom)
-		DisplayText.setString("Room: " + std::to_string(mapManager.getRoom()+1));
+}
+
+void Application::update() {
+	sf::Time dt = deltaClock.restart();
+	short prevroom = mapManager.getRoom();
+	sf::Vector2f v = (sf::Vector2f)sf::Mouse::getPosition(*window);
+	v = (sf::Vector2f)window->mapCoordsToPixel(v);
+	p.update(dt, mapManager.getHitboxes(),v);
+	updatePlayerPage();
     eManager.update(p.getSword(), p.isSwordSheathed());
 }
 

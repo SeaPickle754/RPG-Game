@@ -18,7 +18,7 @@ void EntityManager::initialize(MapManager* m) {
 
 void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
     if(!isSheathed){
-    sf::FloatRect bBox = weapon->getGlobalBounds();
+        sf::FloatRect bBox = weapon->getGlobalBounds();
     for(auto i = entityList[map->getRoom()].begin();i != entityList[map->getRoom()].end(); i++){
         if((*i)->getSprite()->getGlobalBounds().intersects(bBox)&&
            sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN){

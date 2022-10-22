@@ -20,6 +20,7 @@ private:
 	bool DrawDisplay;
 	sf::Font DisplayFont;
 	sf::Text DisplayText;
+	void updatePlayerPage();
 	Player p;
 public:
 	void initialize();
