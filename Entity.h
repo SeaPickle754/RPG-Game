@@ -15,9 +15,9 @@ protected:
 	float health;
 	HealthBar* healthBar;
 public:
-	void dropPayload();
-	void initialize(sf::Vector2f);
-	void update(sf::Vector2f);
+	virtual void dropPayload();
+	virtual void initialize(sf::Vector2f);
+	virtual void update(sf::Vector2f);
 	inline sf::Sprite* getSprite() {return &sprite;}
 	inline void dealDamage(float damage) {health -= damage;}
     void draw(sf::RenderWindow&);

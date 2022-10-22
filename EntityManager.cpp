@@ -9,8 +9,8 @@ void EntityManager::initialize(MapManager* m) {
 	 char type; int page; int posX; int posY;
 	 while(in.read_row(type, page, posX, posY)){
         if(type == 'O'){
-            Chest e;
-            e.initialize(sf::Vector2f(posX, posY));
+            Chest* e (new Chest);
+            e->initialize(sf::Vector2f(posX, posY));
 
             entityList[page].push_back(e);
     }}
@@ -20,14 +20,17 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
     if(!isSheathed){
     sf::FloatRect bBox = weapon->getGlobalBounds();
     for(auto i = entityList[map->getRoom()].begin();i != entityList[map->getRoom()].end(); i++){
-        if(i->getSprite()->getGlobalBounds().intersects(bBox)&&
+        if((*i)->getSprite()->getGlobalBounds().intersects(bBox)&&
            sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN){
-            i->dealDamage(PLAYER_SWORD_DAMAGE);
+            (*i)->dealDamage(PLAYER_SWORD_DAMAGE);
 
-            i->update(sf::Vector2f(0.f, 0.f));
+            (*i)->update(sf::Vector2f(0.f, 0.f));
             sword_cooldown.restart();
-            if(i->checkDeath(0.f))
+            if((*i)->checkDeath(0.f)){
+                (*i)->dropPayload();
+                delete *i;
                 entityList[map->getRoom()].erase(i);
+            }
             break;
         }
     }}
@@ -35,14 +38,14 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
 
 void EntityManager::DrawWorld(sf::RenderWindow& window) {
 	for (auto i = entityList[map->getRoom()].begin(); i != entityList[map->getRoom()].end(); i++) {
-		i->draw(window);
+		(*i)->draw(window);
 	}
 }
 
 void EntityManager::spawnEntity(char type, sf::Vector2f pos){
     if(type == 'O'){
-        Chest e;
-        e.initialize(pos);
+        Chest* e = new Chest;
+        e->initialize(pos);
 
     entityList[map->getRoom()].push_back(e);
 }}
@@ -56,7 +59,7 @@ f.close();
 f.open("ram.csv", std::ofstream::app);
 for(int i = 0; i < 9; i++){
     for(auto j = entityList[i].begin();j != entityList[i].end();j++){
-        sf::Vector2f vec = j->getSprite()->getPosition();
+        sf::Vector2f vec = (*j)->getSprite()->getPosition();
         f << 'O'<<',' << i << ','<< vec.x <<','<< vec.y << std::endl;
     }
 }

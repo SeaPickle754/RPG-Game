@@ -13,7 +13,7 @@ const int TEXTURE_NUMBER = 1;
 
 class EntityManager {
 private:
-	std::vector<Entity> entityList[9];
+	std::vector<Entity*> entityList[9];
 	sf::Texture textures[TEXTURE_NUMBER];
 	MapManager* map;
 	sf::Clock sword_cooldown;

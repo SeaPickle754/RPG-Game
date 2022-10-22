@@ -14,6 +14,6 @@ return;
 }
 
 void Entity::update(sf::Vector2f target){
-    healthBar->updateHealth(health);
+//healthBar->updateHealth(health);
 return;
 }

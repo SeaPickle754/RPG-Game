@@ -20,6 +20,3 @@ void Chest::update(sf::Vector2f target){
 healthBar->updateHealth(health);
 return;
 }
-
-Chest::~Chest(){
-}
