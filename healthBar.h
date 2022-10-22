@@ -9,6 +9,7 @@ public:
     void setMaxWidth(float newMaxWidth);
     void updateHealth(float newHealth);
     inline void draw(sf::RenderWindow& window) {window.draw(rect);}
+    inline void moveTo(sf::Vector2f pos) {rect.setPosition(pos);}
     // stack overflow question #5731863
     inline float map(float x, float in_min, float in_max, float out_min, float out_max){return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;}
 };

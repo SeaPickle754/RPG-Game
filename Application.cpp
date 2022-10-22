@@ -78,7 +78,7 @@ void Application::update() {
 	v = (sf::Vector2f)window->mapCoordsToPixel(v);
 	p.update(dt, mapManager.getHitboxes(),v);
 	updatePlayerPage();
-    eManager.update(p.getSword(), p.isSwordSheathed());
+    eManager.update(p.getSword(), p.isSwordSheathed(), p.getSprite()->getPosition());
 }
 
 void Application::doEvents() {

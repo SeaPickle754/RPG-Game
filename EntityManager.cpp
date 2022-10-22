@@ -9,22 +9,27 @@ void EntityManager::initialize(MapManager* m) {
 	 char type; int page; int posX; int posY;
 	 while(in.read_row(type, page, posX, posY)){
         if(type == 'O'){
-            Chest* e (new Chest);
+            Chest* e = new Chest;
             e->initialize(sf::Vector2f(posX, posY));
 
             entityList[page].push_back(e);
-    }}
+    }
+        else if(type == 'a'){
+            Amogus* e = new Amogus;
+            e->initialize(sf::Vector2f(posX, posY));
+            entityList[page].push_back(e);
+        }
+    }
 }
 
-void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
-    if(!isSheathed){
+void EntityManager::update(sf::Sprite* weapon, bool isSheathed, sf::Vector2f playerPos){
         sf::FloatRect bBox = weapon->getGlobalBounds();
+
     for(auto i = entityList[map->getRoom()].begin();i != entityList[map->getRoom()].end(); i++){
         if((*i)->getSprite()->getGlobalBounds().intersects(bBox)&&
-           sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN){
+           sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN && !isSheathed){
             (*i)->dealDamage(PLAYER_SWORD_DAMAGE);
 
-            (*i)->update(sf::Vector2f(0.f, 0.f));
             sword_cooldown.restart();
             if((*i)->checkDeath(0.f)){
                 (*i)->dropPayload();
@@ -33,7 +38,9 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed){
             }
             break;
         }
-    }}
+
+            (*i)->update(playerPos);
+    }
 }
 
 void EntityManager::DrawWorld(sf::RenderWindow& window) {

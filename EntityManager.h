@@ -19,7 +19,7 @@ private:
 	sf::Clock sword_cooldown;
 public:
 	void initialize(MapManager*);
-	void update(sf::Sprite* weapon, bool);
+	void update(sf::Sprite* weapon, bool, sf::Vector2f);
 	void DrawWorld(sf::RenderWindow&);
 	void spawnEntity(char type, sf::Vector2f pos);
 	void saveToFile(const char* filename);
