@@ -23,3 +23,9 @@ seems to throw a compile error.
 // the length of the health bar when it is
 // full.
 #define HEALTH_BAR_MAX_LENGTH 40
+// Pi.
+#define PI 3.14159265
+
+#define PLAYER_HEIGHT 20
+#define PLAYER_WIDTH 20
+#define PLAYER_COLLISION_OFFSET 5

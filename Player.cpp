@@ -1,7 +1,5 @@
 #include "Player.h"
-#include <math.h>
-#include <iostream>
-const double PI =3.14159265;
+
 bool Player::initialize(){
 	if (!tex.loadFromFile("images/player.png")) return false;
 	if(!t_sword.loadFromFile("images/sword.png")) return false;
@@ -33,33 +31,33 @@ void Player::draw(sf::RenderWindow& window) {
 void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vector2f mousePos) {
 	sf::Vector2f vec = sprite.getPosition();
 	if (up) {
-		if (!checkCollisions(vec.x+5, vec.y - PLAYER_SPEED * dt.asSeconds(), hitboxes)
-		&& !checkCollisions(vec.x+15, (vec.y - PLAYER_SPEED * dt.asSeconds()), hitboxes))
+		if (!checkCollisions(vec.x+PLAYER_COLLISION_OFFSET, vec.y - PLAYER_SPEED * dt.asSeconds(), hitboxes)
+		&& !checkCollisions(vec.x+PLAYER_WIDTH-PLAYER_COLLISION_OFFSET, (vec.y - PLAYER_SPEED * dt.asSeconds()), hitboxes))
 			vec.y -= PLAYER_SPEED * dt.asSeconds();
 	}
 	else if (left) {
 		if (!checkCollisions(vec.x - (PLAYER_SPEED * dt.asSeconds()), vec.y, hitboxes)&&
-			!checkCollisions(vec.x - (PLAYER_SPEED * dt.asSeconds()), vec.y+20, hitboxes)) {
+			!checkCollisions(vec.x - (PLAYER_SPEED * dt.asSeconds()), vec.y+PLAYER_HEIGHT-PLAYER_COLLISION_OFFSET, hitboxes)) {
 			vec.x -= PLAYER_SPEED * dt.asSeconds();
 		}
 	}
 	else if (down) {
-		if (!checkCollisions(vec.x, vec.y + (PLAYER_SPEED * dt.asSeconds() + 20), hitboxes)&&
-			!checkCollisions(vec.x+20, vec.y + (PLAYER_SPEED * dt.asSeconds() + 20), hitboxes)) {
+		if (!checkCollisions(vec.x, vec.y + (PLAYER_SPEED * dt.asSeconds() + PLAYER_HEIGHT), hitboxes)&&
+			!checkCollisions(vec.x+PLAYER_HEIGHT, vec.y + (PLAYER_SPEED * dt.asSeconds() + PLAYER_HEIGHT), hitboxes)) {
 			vec.y += PLAYER_SPEED * dt.asSeconds();
 		}
 
 	}
 	else if (right) {
-		if (!checkCollisions(vec.x + (PLAYER_SPEED * dt.asSeconds()+20), vec.y, hitboxes)&&
-			!checkCollisions(vec.x + (PLAYER_SPEED * dt.asSeconds() + 20), vec.y+20, hitboxes)) {
+		if (!checkCollisions(vec.x + (PLAYER_SPEED * dt.asSeconds()+PLAYER_WIDTH), vec.y, hitboxes)&&
+			!checkCollisions(vec.x + (PLAYER_SPEED * dt.asSeconds() + PLAYER_WIDTH), vec.y+PLAYER_HEIGHT, hitboxes)) {
 			vec.x += PLAYER_SPEED * dt.asSeconds();
 		}
 	}
 	sprite.setPosition(vec);
 	// Rotate the sword to point towards the mouse
 	if(!sword_sheathed){
-        sword->setPosition(vec.x, vec.y+10);
+        sword->setPosition(vec.x, vec.y+static_cast<int>(PLAYER_HEIGHT/2));
         sf::Vector2f sVec = sword->getPosition();
         float angle = atan2(mousePos.y-sVec.y, mousePos.x-sVec.x );
         angle = (angle * (180/PI))+270;
