@@ -22,7 +22,7 @@ return;
 }
 // =====================================================================
 
-void Amogus::initialize(sf::Vector2f pos){
+void Slime::initialize(sf::Vector2f pos){
 health = 30.6;
 healthBar = new HealthBar;
 sf::Vector2f v (pos);
@@ -34,21 +34,20 @@ sprite.setTexture(*tex);
 sprite.setPosition(pos);
 }
 
-void Amogus::dropPayload(){
+void Slime::dropPayload(){
 delete healthBar;
 delete tex;
 return;
 }
 
-void Amogus::update(sf::Vector2f target){
+void Slime::update(sf::Vector2f target){
     healthBar->updateHealth(health);
     sf::Vector2f vec = sprite.getPosition();
 
     float angle = atan2(target.y-vec.y, target.x-vec.x );
-    angle = (angle * (180/PI))+270;
-    angle = static_cast<float>(angle);
-    vec.y -= std::round(std::sin(angle));
-    vec.x -= std::round(std::cos(angle));
+//    angle = (angle * (180/PI))+270;
+    vec.y -= ENTITY_SPEED*std::sin(angle);
+    vec.x -= ENTITY_SPEED*std::cos(angle);
     healthBar->moveTo(sf::Vector2f(vec.x, vec.y - (HEALTH_BAR_HEIGHT + 1)));
     sprite.setPosition(vec);
 }

@@ -10,7 +10,7 @@ public:
      inline void draw(sf::RenderWindow& window) {healthBar->draw(window);};
 };
 
-class Amogus : public Entity{
+class Slime : public Entity{
 public:
      void initialize(sf::Vector2f pos);
      void dropPayload();

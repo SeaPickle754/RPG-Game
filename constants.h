@@ -12,6 +12,8 @@ seems to throw a compile error.
 #define PLAYER_SPEED 150.f
 // Whether or not the player's sword is sheathed
 #define PLAYER_DEFAULT_SWORD true
+// Player's health when full
+#define PLAYER_MAX_HEALTH 6
 // The bare sword damage
 #define PLAYER_SWORD_DAMAGE 2.25
 //sword damage cooldown in milliseconds
@@ -29,3 +31,4 @@ seems to throw a compile error.
 #define PLAYER_HEIGHT 20
 #define PLAYER_WIDTH 20
 #define PLAYER_COLLISION_OFFSET 5
+#define ENTITY_SPEED 130

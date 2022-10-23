@@ -3,9 +3,14 @@
 bool Player::initialize(){
 	if (!tex.loadFromFile("images/player.png")) return false;
 	if(!t_sword.loadFromFile("images/sword.png")) return false;
+	if(!heart_tex.loadFromFile("images/heart.png")) return false;
+
 	sprite.setTexture(tex);
 	sprite.setTextureRect(sf::IntRect(0,0,20,20));
+	hearts.setTexture(heart_tex);
+	hearts.setTextureRect(sf::IntRect(19,0,19,19));
 	up = false;
+	health = PLAYER_MAX_HEALTH;
 	down = false;
 	left = false;
 	right = false;
@@ -23,13 +28,8 @@ bool Player::checkCollisions(float x, float y, std::vector<sf::FloatRect>& hitbo
 	}
 	return false;
 }
-void Player::draw(sf::RenderWindow& window) {
-    if(!sword_sheathed)
-        window.draw(*sword);
-	window.draw(sprite);
-}
+void Player::dealWithMotion(sf::Time& dt, std::vector<sf::FloatRect>& hitboxes){
 
-void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vector2f mousePos) {
 	sf::Vector2f vec = sprite.getPosition();
 	if (up) {
 		if (!checkCollisions(vec.x+PLAYER_COLLISION_OFFSET, vec.y - PLAYER_SPEED * dt.asSeconds(), hitboxes)
@@ -62,6 +62,21 @@ void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vecto
 		}
 	}
 	sprite.setPosition(vec);
+
+}
+void Player::draw(sf::RenderWindow& window) {
+    if(!sword_sheathed)
+        window.draw(*sword);
+	window.draw(sprite);
+	for(int i = 0; i < health; i++){
+        hearts.setPosition(i*22, 0);
+        window.draw(hearts);
+	}
+}
+
+void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vector2f mousePos) {
+	dealWithMotion(dt, hitboxes);
+    sf::Vector2f vec = sprite.getPosition();
 	// Rotate the sword to point towards the mouse
 	if(!sword_sheathed){
         sword->setPosition(vec.x, vec.y+static_cast<int>(PLAYER_HEIGHT/2));
@@ -70,5 +85,8 @@ void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vecto
         angle = (angle * (180/PI))+270;
         sword->setRotation(angle);
     }
-
+    if(health!=PLAYER_MAX_HEALTH)
+        hearts.setTextureRect(sf::IntRect(0,0,19,19));
+    else
+        hearts.setTextureRect(sf::IntRect(19,0,19,19));
 }

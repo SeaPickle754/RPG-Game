@@ -16,7 +16,10 @@ void Application::initialize() {
 	DisplayText.setScale(sf::Vector2f(0.5, 0.5));
 	DisplayText.setString("Room: 1");
 
-	if(!p.initialize()) window->close();
+	if(!p.initialize()){
+        errorMessage("Could not find an image! Quitting");
+        window->close();
+	}
 }
 
 void Application::render() {
@@ -79,6 +82,8 @@ void Application::update() {
 	p.update(dt, mapManager.getHitboxes(),v);
 	updatePlayerPage();
     eManager.update(p.getSword(), p.isSwordSheathed(), p.getSprite()->getPosition());
+    if(p.isDead())
+        window->close();
 }
 
 void Application::doEvents() {
@@ -108,6 +113,8 @@ void Application::doEvents() {
 
 			if (e.key.code == sf::Keyboard::Up)
 				p.up = true;
+            else if(e.key.code == sf::Keyboard::W)
+                p.dealDamage(1);
 			else if (e.key.code == sf::Keyboard::Down)
 				p.down = true;
 			else if (e.key.code == sf::Keyboard::Left)

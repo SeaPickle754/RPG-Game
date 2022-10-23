@@ -15,7 +15,7 @@ void EntityManager::initialize(MapManager* m) {
             entityList[page].push_back(e);
     }
         else if(type == 'a'){
-            Amogus* e = new Amogus;
+            Slime* e = new Slime;
             e->initialize(sf::Vector2f(posX, posY));
             entityList[page].push_back(e);
         }
@@ -55,8 +55,16 @@ void EntityManager::spawnEntity(char type, sf::Vector2f pos){
         e->initialize(pos);
 
     entityList[map->getRoom()].push_back(e);
-}}
+    }
 
+    if(type == 'a'){
+        Slime* e = new Slime;
+        e->initialize(pos);
+
+    entityList[map->getRoom()].push_back(e);
+
+    }
+}
 
 void EntityManager::saveToFile(const char* filename){
 std::ofstream f;
