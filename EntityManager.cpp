@@ -22,9 +22,9 @@ void EntityManager::initialize(MapManager* m) {
     }
 }
 
-void EntityManager::update(sf::Sprite* weapon, bool isSheathed, sf::Vector2f playerPos){
-        sf::FloatRect bBox = weapon->getGlobalBounds();
-
+void EntityManager::update(Player* p){
+        sf::FloatRect bBox = p->getSword()->getGlobalBounds();
+    bool isSheathed = p->isSwordSheathed();
     for(auto i = entityList[map->getRoom()].begin();i != entityList[map->getRoom()].end(); i++){
         if((*i)->getSprite()->getGlobalBounds().intersects(bBox)&&
            sword_cooldown.getElapsedTime().asMilliseconds() >= SWORD_COOLDOWN && !isSheathed){
@@ -39,7 +39,11 @@ void EntityManager::update(sf::Sprite* weapon, bool isSheathed, sf::Vector2f pla
             break;
         }
 
-            (*i)->update(playerPos);
+            if((*i)->update(*(p->getSprite()))
+               && p->damageCooldown.getElapsedTime().asMilliseconds() >= PLAYER_DAMAGE_COOLDOWN){
+                p->dealDamage(1);
+                p->damageCooldown.restart();
+            }
     }
 }
 
@@ -75,7 +79,7 @@ f.open("ram.csv", std::ofstream::app);
 for(int i = 0; i < 9; i++){
     for(auto j = entityList[i].begin();j != entityList[i].end();j++){
         sf::Vector2f vec = (*j)->getSprite()->getPosition();
-        f << 'O'<<',' << i << ','<< vec.x <<','<< vec.y << std::endl;
+        f << (*j)->type<<',' << i << ','<< vec.x <<','<< vec.y << std::endl;
     }
 }
 }

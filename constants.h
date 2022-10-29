@@ -13,9 +13,9 @@ seems to throw a compile error.
 // Whether or not the player's sword is sheathed
 #define PLAYER_DEFAULT_SWORD true
 // Player's health when full
-#define PLAYER_MAX_HEALTH 6
+#define PLAYER_MAX_HEALTH 10
 // The bare sword damage
-#define PLAYER_SWORD_DAMAGE 2.25
+#define PLAYER_SWORD_DAMAGE 3
 //sword damage cooldown in milliseconds
 #define SWORD_COOLDOWN 300
 // the height of the health bar (10 default)
@@ -27,8 +27,11 @@ seems to throw a compile error.
 #define HEALTH_BAR_MAX_LENGTH 40
 // Pi.
 #define PI 3.14159265
-
+// Height of the player image
 #define PLAYER_HEIGHT 20
+// Width of the player image
 #define PLAYER_WIDTH 20
+// Used for collisions.
 #define PLAYER_COLLISION_OFFSET 5
-#define ENTITY_SPEED 130
+
+#define PLAYER_DAMAGE_COOLDOWN 600

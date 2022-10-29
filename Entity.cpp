@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 void Entity::initialize(sf::Vector2f pos) {
-
+    type = '-';
 }
 
 void Entity::draw(sf::RenderWindow& window) {
@@ -13,7 +13,7 @@ void Entity::dropPayload(){
 return;
 }
 
-void Entity::update(sf::Vector2f target){
+bool Entity::update(sf::Sprite& s){
 //healthBar->updateHealth(health);
-return;
+return false;
 }

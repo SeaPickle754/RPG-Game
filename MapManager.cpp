@@ -3,6 +3,24 @@
 MapManager::MapManager() {
 	room = 0;
 	nonPassables = "$~";
+	damaging = "^";
+}
+
+void MapManager::update(Player* p){
+    for(int i = 0; i < 10; i++){
+            for(int j = 0; j<10;j++){
+				if (damaging.find(map[room][i][j]) != std::string::npos){
+					sf::FloatRect f = p->getSprite()->getGlobalBounds();
+				if(f.intersects(sf::FloatRect(j * 40, i * 40, 40, 40))){
+
+                        if(p->damageCooldown.getElapsedTime().asMilliseconds() >= PLAYER_DAMAGE_COOLDOWN){
+                            p->dealDamage(3);
+                            p->damageCooldown.restart();
+                        }
+                    }
+                }
+            }
+    }
 }
 
 void MapManager::drawWorld(sf::RenderWindow* window) {
@@ -25,6 +43,10 @@ void MapManager::drawWorld(sf::RenderWindow* window) {
 			else if (map[room][i][j] == '~') {
 				tiles[3].setPosition(j * 40.f, i * 40.f);
 				window->draw(tiles[3]);
+			}
+			else if(map[room][i][j] == '^'){
+                tiles[4].setPosition(j*40.f, i*40.f);
+                window->draw(tiles[4]);
 			}
 		}
 	}

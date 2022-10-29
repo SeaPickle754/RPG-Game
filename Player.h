@@ -18,6 +18,7 @@ private:
 	void dealWithMotion(sf::Time&, std::vector<sf::FloatRect>&);
 	bool checkCollisions(float x, float y, std::vector<sf::FloatRect>&);
 public:
+    sf::Clock damageCooldown;
 	bool initialize();
 	inline int getHealth() {return health;}
 	inline void dealDamage(int damage) {health -= damage;}
@@ -28,6 +29,6 @@ public:
 	bool up, down, left, right;
 	inline sf::Sprite* getSprite() { return &sprite; }
 	inline void toggleSword(){sword_sheathed=!sword_sheathed;}
-	inline sf::Sprite* getSword(){return sword;}
+	inline sf::Sprite* getSword() {return sword;}
 	inline bool isSwordSheathed(){return sword_sheathed;}
 };

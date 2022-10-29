@@ -4,7 +4,7 @@ void Application::initialize() {
 	window = new sf::RenderWindow(sf::VideoMode(400, 400), "Ziggy 2");
 	window->setFramerateLimit(60);
 	window->setKeyRepeatEnabled(false);
-
+    gameState = State::TITLESCREEN;
 	if(!mapManager.initMap()) window->close();
 	eManager.initialize(&mapManager);
 	DrawDisplay = false;
@@ -20,6 +20,8 @@ void Application::initialize() {
         errorMessage("Could not find an image! Quitting");
         window->close();
 	}
+	//start Game Loop
+	run();
 }
 
 void Application::render() {
@@ -30,6 +32,43 @@ void Application::render() {
 	if (DrawDisplay)
 		window->draw(DisplayText);
 	window->display();
+}
+
+void Application::run(){
+
+while(window->isOpen()){
+    if(gameState != State::TITLESCREEN){
+    doEvents();
+    if(gameState != State::PAUSED)
+        update();
+    render();
+    }
+    else if(gameState == State::TITLESCREEN){
+        renderTitlescreen();
+        doTitlescreenEvents();
+    }
+
+}
+}
+
+void Application::doTitlescreenEvents(){
+
+sf::Event e;
+while(window->pollEvent(e)){
+    if(e.type == sf::Event::KeyPressed){
+        gameState = State::PLAYING;
+    }
+    if(e.type == sf::Event::Closed)
+        window->close();
+}
+}
+void Application::renderTitlescreen(){
+    sf::Texture titlescreen;
+    if(!titlescreen.loadFromFile("images/startscreen.png")) errorMessage("Error loading titlescreen image(startscreen.png or similar)");
+    sf::Sprite s(titlescreen);
+    window->clear(sf::Color(255,255,255));
+    window->draw(s);
+    window->display();
 }
 
 void Application::updatePlayerPage(){
@@ -81,7 +120,9 @@ void Application::update() {
 	v = (sf::Vector2f)window->mapCoordsToPixel(v);
 	p.update(dt, mapManager.getHitboxes(),v);
 	updatePlayerPage();
-    eManager.update(p.getSword(), p.isSwordSheathed(), p.getSprite()->getPosition());
+	if(gameState != State::NO_MOTION)
+        eManager.update(&p);
+    mapManager.update(&p);
     if(p.isDead())
         window->close();
 }
@@ -94,7 +135,8 @@ void Application::doEvents() {
 		}
 		#ifdef DOEDIT
         if(e.type == sf::Event::MouseButtonPressed &&
-        e.mouseButton.button == sf::Mouse::Left){
+        e.mouseButton.button == sf::Mouse::Left &&
+        gameState == State::PLAYING){
             sf::Vector2i clickPos = sf::Mouse::getPosition(*window);
             sf::Vector2i worldPos = window->mapCoordsToPixel((sf::Vector2f)clickPos);
             mapManager.setTile(true, worldPos.x/40, worldPos.y/40, selected, -1);
@@ -104,13 +146,14 @@ void Application::doEvents() {
         e.mouseButton.button == sf::Mouse::Right){
             sf::Vector2i clickPos = sf::Mouse::getPosition(*window);
             sf::Vector2i worldPos = window->mapCoordsToPixel((sf::Vector2f)clickPos);
-            eManager.spawnEntity('O', (sf::Vector2f)worldPos);
+            eManager.spawnEntity('a', (sf::Vector2f)worldPos);
         }
         #endif // DOEDIT
 		if (e.type == sf::Event::KeyPressed)
 		{
 
 
+        if(gameState != State::PAUSED){
 			if (e.key.code == sf::Keyboard::Up)
 				p.up = true;
             else if(e.key.code == sf::Keyboard::W)
@@ -125,6 +168,9 @@ void Application::doEvents() {
 				DrawDisplay = !DrawDisplay;
             else if (e.key.code == sf::Keyboard::Space)
                 p.toggleSword();
+		}
+        if(e.key.code == sf::Keyboard::P)
+                gameState = !gameState;
     #ifdef DOEDIT
 else if (e.key.code == sf::Keyboard::S)
 				mapManager.saveMapToFile("map.map");
@@ -136,6 +182,8 @@ else if (e.key.code == sf::Keyboard::S)
 				selected = '#';
 			else if (e.key.code == sf::Keyboard::Num4)
 				selected = '~';
+            else if(e.key.code == sf::Keyboard::Num5)
+                selected = '^';
             else if (e.key.code == sf::Keyboard::B)
                 eManager.saveToFile("ram.csv");
 #endif // DOEDIT

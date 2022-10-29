@@ -3,7 +3,7 @@
 bool Player::initialize(){
 	if (!tex.loadFromFile("images/player.png")) return false;
 	if(!t_sword.loadFromFile("images/sword.png")) return false;
-	if(!heart_tex.loadFromFile("images/heart.png")) return false;
+	if(!heart_tex.loadFromFile("images/hearts.png")) return false;
 
 	sprite.setTexture(tex);
 	sprite.setTextureRect(sf::IntRect(0,0,20,20));
@@ -21,6 +21,8 @@ bool Player::initialize(){
 }
 
 bool Player::checkCollisions(float x, float y, std::vector<sf::FloatRect>& hitboxes) {
+
+
 	for (auto i = hitboxes.begin(); i != hitboxes.end(); i++) {
 		if (i->contains(x, y)) {
 			return true;
@@ -29,6 +31,8 @@ bool Player::checkCollisions(float x, float y, std::vector<sf::FloatRect>& hitbo
 	return false;
 }
 void Player::dealWithMotion(sf::Time& dt, std::vector<sf::FloatRect>& hitboxes){
+
+
 
 	sf::Vector2f vec = sprite.getPosition();
 	if (up) {
@@ -68,9 +72,16 @@ void Player::draw(sf::RenderWindow& window) {
     if(!sword_sheathed)
         window.draw(*sword);
 	window.draw(sprite);
-	for(int i = 0; i < health; i++){
-        hearts.setPosition(i*22, 0);
+	hearts.setTextureRect(sf::IntRect(38,0,19,19));
+	hearts.setPosition(0.f, 0.f);
+	for(int i = 0; i < health/2; i++){
         window.draw(hearts);
+        hearts.move(sf::Vector2f(22,0));
+	}
+	if(health % 2){
+        hearts.setTextureRect(sf::IntRect(19,0,19,19));
+        window.draw(hearts);
+        hearts.move(sf::Vector2f(22,0));
 	}
 }
 
@@ -85,8 +96,6 @@ void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vecto
         angle = (angle * (180/PI))+270;
         sword->setRotation(angle);
     }
-    if(health!=PLAYER_MAX_HEALTH)
-        hearts.setTextureRect(sf::IntRect(0,0,19,19));
     else
         hearts.setTextureRect(sf::IntRect(19,0,19,19));
 }

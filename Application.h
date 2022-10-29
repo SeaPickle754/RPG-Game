@@ -6,6 +6,7 @@
 #include "EntityManager.h"
 #include <string>
 #include "constants.h"
+#include "States.h"
 
 
 class Application {
@@ -14,6 +15,7 @@ private:
     char selected;
     #endif // DOEDIT
 	sf::RenderWindow* window;
+	State gameState;
 	sf::Clock deltaClock;
 	MapManager mapManager;
 	EntityManager eManager;
@@ -21,6 +23,9 @@ private:
 	sf::Font DisplayFont;
 	sf::Text DisplayText;
 	void updatePlayerPage();
+	void run();
+	void renderTitlescreen();
+	void doTitlescreenEvents();
 	Player p;
 public:
 	void initialize();
