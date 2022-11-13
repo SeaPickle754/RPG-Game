@@ -21,7 +21,7 @@ public:
     sf::Clock damageCooldown;
 	bool initialize();
 	inline int getHealth() {return health;}
-	inline void dealDamage(int damage) {health -= damage;}
+	void dealDamage(int damage);
 	inline bool isDead() {return health <= 0.f;}
 	void draw(sf::RenderWindow& window);
 	void update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vector2f);
@@ -31,4 +31,5 @@ public:
 	inline void toggleSword(){sword_sheathed=!sword_sheathed;}
 	inline sf::Sprite* getSword() {return sword;}
 	inline bool isSwordSheathed(){return sword_sheathed;}
+	void restart();
 };

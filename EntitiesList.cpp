@@ -12,9 +12,12 @@ void Chest::initialize(sf::Vector2f pos){
 }
 
 void Chest::dropPayload(){
-delete healthBar;
-delete tex;
 return;
+}
+
+void Chest::freeMem(){
+delete tex;
+delete healthBar;
 }
 
 bool Chest::update(sf::Sprite& s){
@@ -38,9 +41,13 @@ return;
 }
 
 void Slime::dropPayload(){
-delete healthBar;
-delete tex;
+
 return;
+}
+
+void Slime::freeMem(){
+delete tex;
+delete healthBar;
 }
 
 bool Slime::update(sf::Sprite& s){

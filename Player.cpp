@@ -23,6 +23,8 @@ bool Player::initialize(){
 bool Player::checkCollisions(float x, float y, std::vector<sf::FloatRect>& hitboxes) {
 
 
+
+
 	for (auto i = hitboxes.begin(); i != hitboxes.end(); i++) {
 		if (i->contains(x, y)) {
 			return true;
@@ -30,10 +32,13 @@ bool Player::checkCollisions(float x, float y, std::vector<sf::FloatRect>& hitbo
 	}
 	return false;
 }
+void Player::dealDamage(int damage){
+    if(damageCooldown.getElapsedTime().asMilliseconds() > PLAYER_DAMAGE_COOLDOWN){
+        health -= damage;
+        damageCooldown.restart();
+    }
+}
 void Player::dealWithMotion(sf::Time& dt, std::vector<sf::FloatRect>& hitboxes){
-
-
-
 	sf::Vector2f vec = sprite.getPosition();
 	if (up) {
 		if (!checkCollisions(vec.x+PLAYER_COLLISION_OFFSET, vec.y - PLAYER_SPEED * dt.asSeconds(), hitboxes)
@@ -84,7 +89,14 @@ void Player::draw(sf::RenderWindow& window) {
         hearts.move(sf::Vector2f(22,0));
 	}
 }
-
+void Player::restart(){
+    sprite.setPosition(0, 0);
+    sword_sheathed = PLAYER_DEFAULT_SWORD;
+    delete sword;
+    health = PLAYER_MAX_HEALTH;
+    sword = new sf::Sprite(t_sword);
+    sword->setOrigin(5,0);
+}
 void Player::update(sf::Time dt, std::vector<sf::FloatRect>& hitboxes, sf::Vector2f mousePos) {
 	dealWithMotion(dt, hitboxes);
     sf::Vector2f vec = sprite.getPosition();

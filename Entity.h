@@ -24,4 +24,5 @@ public:
     void draw(sf::RenderWindow&);
 	inline float Gethealth(){return health;}
 	inline bool checkDeath(float minHealth) {return (health < minHealth);}
+	void freeMem();
 };

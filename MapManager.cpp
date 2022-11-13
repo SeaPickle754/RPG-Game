@@ -6,20 +6,28 @@ MapManager::MapManager() {
 	damaging = "^";
 }
 
+void MapManager::addHitbox(struct HitboxRequest r){
+    r.active = false;
+    hitboxRequests.push_back(r);
+}
+
 void MapManager::update(Player* p){
     for(int i = 0; i < 10; i++){
             for(int j = 0; j<10;j++){
 				if (damaging.find(map[room][i][j]) != std::string::npos){
 					sf::FloatRect f = p->getSprite()->getGlobalBounds();
 				if(f.intersects(sf::FloatRect(j * 40, i * 40, 40, 40))){
-
-                        if(p->damageCooldown.getElapsedTime().asMilliseconds() >= PLAYER_DAMAGE_COOLDOWN){
                             p->dealDamage(3);
-                            p->damageCooldown.restart();
                         }
                     }
                 }
             }
+    for(auto it = hitboxRequests.begin(); it != hitboxRequests.end(); it++){
+        if(room == it->page && !it->active){
+            hitboxes.push_back(it->f);
+            it->active = true;
+            break;
+        }
     }
 }
 
@@ -85,6 +93,9 @@ void MapManager::updateHitboxes() {
 
 void MapManager::changeRoomTo(int r) {
 	hitboxes.clear();
+	for(auto iter = hitboxRequests.begin(); iter != hitboxRequests.end(); iter++){
+        iter->active = false;
+	}
 	room = r;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {

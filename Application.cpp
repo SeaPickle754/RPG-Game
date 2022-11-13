@@ -116,15 +116,18 @@ void Application::updatePlayerPage(){
 void Application::update() {
 	sf::Time dt = deltaClock.restart();
 	short prevroom = mapManager.getRoom();
-	sf::Vector2f v = (sf::Vector2f)sf::Mouse::getPosition(*window);
-	v = (sf::Vector2f)window->mapCoordsToPixel(v);
+	sf::Vector2f v = eManager.getNearestEntity(p.getSprite()->getPosition());
 	p.update(dt, mapManager.getHitboxes(),v);
 	updatePlayerPage();
 	if(gameState != State::NO_MOTION)
         eManager.update(&p);
     mapManager.update(&p);
-    if(p.isDead())
-        window->close();
+    if(p.isDead()){
+        gameState = State::TITLESCREEN;
+        p.restart();
+        eManager.restart();
+        mapManager.restart();
+    }
 }
 
 void Application::doEvents() {
@@ -146,7 +149,7 @@ void Application::doEvents() {
         e.mouseButton.button == sf::Mouse::Right){
             sf::Vector2i clickPos = sf::Mouse::getPosition(*window);
             sf::Vector2i worldPos = window->mapCoordsToPixel((sf::Vector2f)clickPos);
-            eManager.spawnEntity('a', (sf::Vector2f)worldPos);
+            eManager.spawnEntity('O', (sf::Vector2f)worldPos);
         }
         #endif // DOEDIT
 		if (e.type == sf::Event::KeyPressed)

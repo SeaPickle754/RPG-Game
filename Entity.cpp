@@ -17,3 +17,6 @@ bool Entity::update(sf::Sprite& s){
 //healthBar->updateHealth(health);
 return false;
 }
+
+void Entity::freeMem(){
+}

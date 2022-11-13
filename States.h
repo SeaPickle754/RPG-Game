@@ -1,5 +1,5 @@
 
-//#define NOMOTION
+#define NOMOTION
 #include <iostream>
 using namespace std;
 enum class State{PAUSED,PLAYING,NO_MOTION,TITLESCREEN};

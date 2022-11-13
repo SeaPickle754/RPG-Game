@@ -2,10 +2,19 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Player.h"
+#include "debugger.h"
 const int TILE_NUMBER = 5;
+
+struct HitboxRequest{
+    int page;
+    sf::FloatRect f;
+    bool active;
+};
+
 class MapManager {
 private:
 	std::vector<sf::FloatRect> hitboxes;
+	std::<HitboxRequest> hitboxRequests;
 	std::string nonPassables;
 	std::string damaging;
 	std::string map[9][10];
@@ -17,7 +26,9 @@ public:
 	MapManager();
 	bool initMap();
 	void updateHitboxes();
+	void restart() {room = 0;}
 	void update(Player* p);
+	void addHitbox(struct HitboxRequest);
 	int checkPlayerPage(int);
 	void changeRoomTo(int room);
 	void setTile(bool, int, int, char, int);
